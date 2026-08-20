@@ -1,0 +1,28 @@
+2Huan2Yang是一个MinecraftJE服务器，他提供了Minecraft原汁原味的纯生存，虽然他是插件服务器，但插件没有修改原版内容，只是让玩家也能从Minecraft基岩版进入服务器，让大多数版本进入服务器等。2H2Y是2Huan2Yang的简称。
+
+
+
+本服务器规则:
+1. 仅能使用原版内容。如材质包、光影等
+2. 服务器禁止非原版飞行、隔空放方块、自动攻击（PVP）。
+3. 服务器禁止使用服务器漏洞，原版游戏的漏洞那叫做特性。
+4. 禁止向服务器进行网络攻击，禁止向服务器发送大量数据包。
+5. 服务器聊天禁止涉黄，禁止违反国家法律法规。
+6. 必须遵守本服务器规则。
+7. 服务器规则包括但不限于服务器规则。
+8. 违反服务器规则，按严重情况封禁1年到永久，以及IP地址下所有的电子设备。
+
+下面为英文翻译。若出现翻译错误按中文为主。
+2Huan2Yang is a Minecraft Java Edition server that offers a pure, vanilla survival experience. Although it runs on a plugin-based backend, these plugins do not alter any vanilla gameplay. They are strictly used to allow players to join from Minecraft Bedrock Edition and to support a wider range of client versions. 2H2Y is the abbreviation for 2Huan2Yang.
+
+
+
+Server Rules:
+Only vanilla content is permitted (e.g., resource packs, shaders).
+Non-vanilla flight, placing blocks at a distance, and auto-clicking/auto-attacking (in PvP) are strictly prohibited.
+Exploiting server-specific bugs is forbidden. (Note: Vanilla game bugs are considered "features".)
+Network attacks and flooding the server with excessive data packets are strictly prohibited.
+Chat must remain clean: no pornography, and no content that violates national laws and regulations.
+All server rules must be followed.
+This list of rules is not exhaustive.
+Violations will result in bans ranging from 1 year to permanent, depending on the severity. In severe cases, all devices under the offending IP address will be banned.

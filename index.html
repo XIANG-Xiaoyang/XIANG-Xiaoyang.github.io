@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Huan2Yang - 纯生存服务器</title>
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+    
+    <!-- 内部样式表 -->
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #4ade80; /* Minecraft 绿 */
+            --accent-hover: #22c55e;
+            --border-color: #333;
+            --danger-color: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
+        }
+
+        /* 基础信息卡片 (IP和QQ) */
+        .info-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            min-width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .info-item h3 {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .info-item .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        .info-item .value.highlight {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+        }
+
+        /* 实时状态查询面板 (新增) */
+        .status-panel {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列平分 */
+            gap: 20px;
+        }
+
+        .status-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .status-card .status-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .status-card .status-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .status-card.loading .status-value {
+            color: #eab308; /* 黄色加载中 */
+            font-size: 1rem;
+        }
+        
+        .status-card.error .status-value {
+            color: var(--danger-color);
+            font-size: 1rem;
+        }
+
+        /* 图片样式 */
+        .banner-container {
+            width: 100%;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .banner-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-container:hover img {
+            transform: scale(1.02);
+        }
+
+        /* 内容区块 */
+        .content-section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fff;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        /* 规则列表 */
+        .rules-list {
+            list-style: none;
+        }
+
+        .rules-list li {
+            background-color: #252525;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #555;
+            transition: all 0.3s ease;
+        }
+
+        .rules-list li:hover {
+            border-left-color: var(--accent-color);
+            background-color: #2a2a2a;
+        }
+
+        .rules-list li strong {
+            color: var(--accent-color);
+            margin-right: 5px;
+        }
+
+        .translation-note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .en-text { color: #bbb; }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .content-section { padding: 20px; }
+            .info-grid { flex-direction: column; }
+            .status-panel { grid-template-columns: 1fr; /* 手机端改为单列 */ }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>2Huan2Yang</h1>
+            <p>Pure Vanilla Survival · Java & Bedrock Supported</p>
+            
+            <!-- 基础信息：IP 和 QQ -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>服务器 IP</h3>
+                    <div class="value highlight">mc.i14i.com</div>
+                </div>
+                <div class="info-item">
+                    <h3>QQ 交流群</h3>
+                    <div class="value">698931316</div>
+                </div>
+            </div>
+
+            <!-- 实时状态查询面板 (双API) -->
+            <div class="status-panel">
+                <!-- API 1: mcsrvstat.us -->
+                <div class="status-card" id="status-api-1">
+                    <h4>节点 1 查询（在线玩家数）</h4>
+                    <div class="status-value">加载中...</div>
+                    <div class="status-label">在线玩家 (API: mcsrvstat.us)</div>
+                </div>
+                <!-- API 2: mcstatus.io -->
+                <div class="status-card" id="status-api-2">
+                    <h4>节点 2 查询（在线玩家数）</h4>
+                    <div class="status-value">加载中...</div>
+                    <div class="status-label">网络延迟 (API: mcstatus.io)</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 宣传图片 (同级目录) -->
+        <div class="banner-container">
+            <img src="2huan2yang-4xct.png" alt="2Huan2Yang Server Banner">
+        </div>
+
+        <!-- 中文内容 -->
+        <main>
+            <section class="content-section">
+                <h2>服务器介绍</h2>
+                <p>2Huan2Yang是一个Minecraft JE服务器，他提供了Minecraft原汁原味的纯生存，虽然他是插件服务器，但插件没有修改原版内容，只是让玩家也能从Minecraft基岩版进入服务器，让大多数版本进入服务器等。2H2Y是2Huan2Yang的简称。</p>
+            </section>
+
+            <section class="content-section">
+                <h2>服务器规则</h2>
+                <ul class="rules-list">
+                    <li><strong>1.</strong> 仅能使用原版内容。如材质包、光影等</li>
+                    <li><strong>2.</strong> 服务器禁止非原版飞行、隔空放方块、自动攻击（PVP）。</li>
+                    <li><strong>3.</strong> 服务器禁止使用服务器漏洞，原版游戏的漏洞那叫做特性。</li>
+                    <li><strong>4.</strong> 禁止向服务器进行网络攻击，禁止向服务器发送大量数据包。</li>
+                    <li><strong>5.</strong> 服务器聊天禁止涉黄，禁止违反国家法律法规。</li>
+                    <li><strong>6.</strong> 必须遵守本服务器规则。</li>
+                    <li><strong>7.</strong> 服务器规则包括但不限于服务器规则。</li>
+                    <li><strong>8.</strong> 违反服务器规则，按严重情况封禁1年到永久，以及IP地址下所有的电子设备。</li>
+                </ul>
+            </section>
+
+            <!-- 英文翻译 -->
+            <p class="translation-note">Below is the English translation. In case of translation errors, the Chinese version shall prevail.</p>
+
+            <section class="content-section">
+                <h2 class="en-text">Server Introduction</h2>
+                <p class="en-text">2Huan2Yang is a Minecraft Java Edition server that offers a pure, vanilla survival experience. Although it runs on a plugin-based backend, these plugins do not alter any vanilla gameplay. They are strictly used to allow players to join from Minecraft Bedrock Edition and to support a wider range of client versions. 2H2Y is the abbreviation for 2Huan2Yang.</p>
+            </section>
+
+            <section class="content-section">
+                <h2 class="en-text">Server Rules</h2>
+                <ul class="rules-list">
+                    <li class="en-text"><strong>1.</strong> Only vanilla content is permitted (e.g., resource packs, shaders).</li>
+                    <li class="en-text"><strong>2.</strong> Non-vanilla flight, placing blocks at a distance, and auto-clicking/auto-attacking (in PvP) are strictly prohibited.</li>
+                    <li class="en-text"><strong>3.</strong> Exploiting server-specific bugs is forbidden. (Note: Vanilla game bugs are considered "features".)</li>
+                    <li class="en-text"><strong>4.</strong> Network attacks and flooding the server with excessive data packets are strictly prohibited.</li>
+                    <li class="en-text"><strong>5.</strong> Chat must remain clean: no pornography, and no content that violates national laws and regulations.</li>
+                    <li class="en-text"><strong>6.</strong> All server rules must be followed.</li>
+                    <li class="en-text"><strong>7.</strong> This list of rules is not exhaustive.</li>
+                    <li class="en-text"><strong>8.</strong> Violations will result in bans ranging from 1 year to permanent, depending on the severity. In severe cases, all devices under the offending IP address will be banned.</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            &copy; 2026 InvincibleSwift™ All Rights Reserved.
+        </footer>
+    </div>
+
+    <!-- 服务器状态查询脚本 -->
+    <script>
+        const serverIp = 'mc.i141.com';
+
+        // 节点 1：使用 mcsrvstat.us API 查询在线人数
+        async function fetchApi1() {
+            const card = document.getElementById('status-api-1');
+            const valueEl = card.querySelector('.status-value');
+            
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/3/${serverIp}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                if (data.online) {
+                    valueEl.textContent = `${data.players.online} / ${data.players.max}`;
+                    valueEl.style.color = 'var(--accent-color)';
+                } else {
+                    valueEl.textContent = '离线 (Offline)';
+                    card.classList.add('error');
+                }
+            } catch (error) {
+                valueEl.textContent = '请求失败 (Error)';
+                card.classList.add('error');
+                console.error('API 1 Fetch Error:', error);
+            }
+        }
+
+        // 节点 2：使用 mcstatus.io API 查询网络延迟 (Ping)
+        async function fetchApi2() {
+            const card = document.getElementById('status-api-2');
+            const valueEl = card.querySelector('.status-value');
+            
+            try {
+                const response = await fetch(`https://mcstatus.io/api/v2/status/java/${serverIp}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                if (data.online) {
+                    valueEl.textContent = `${data.retries} ms`; // 显示延迟毫秒
+                    valueEl.style.color = 'var(--accent-color)';
+                } else {
+                    valueEl.textContent = '离线 (Offline)';
+                    card.classList.add('error');
+                }
+            } catch (error) {
+                valueEl.textContent = '请求失败 (Error)';
+                card.classList.add('error');
+                console.error('API 2 Fetch Error:', error);
+            }
+        }
+
+        // 页面加载完成后同时发起两个 API 请求
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchApi1();
+            fetchApi2();
+        });
+    </script>
+</body>
+</html>
